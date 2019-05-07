@@ -11,17 +11,18 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(32, 8, PIN,
 const uint16_t colors[] = {
   matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255) };
 
-void led_setup() {
+void ledSetup() {
   matrix.begin();
   matrix.setTextWrap(false);
   matrix.setBrightness(40);
   matrix.setTextColor(colors[0]);
 }
 
-int x    = matrix.width();
+int x    = 0;
 int pass = 0;
 
-void led_loop() {
+//placeholder to check correct working without needing serial input
+void ledLoop() {
   matrix.fillScreen(0);
   matrix.setCursor(x, 0);
   matrix.print(F("Howdy"));
@@ -30,6 +31,23 @@ void led_loop() {
     if(++pass >= 3) pass = 0;
     matrix.setTextColor(colors[pass]);
   }
+  printScreen();
+}
+
+void setPrintScreen(const char * mesg){
+  setScreen(mesg);
+  printScreen();
+}
+
+void setScreen(const char * mesg){
+  matrix.fillScreen(0);
+  matrix.setCursor(0, 0);
+  matrix.print(mesg);
+  matrix.setTextColor(colors[0]);
+}
+
+void printScreen(){
+  noInterrupts();
   matrix.show();
-  delay(1);
+  interrupts();
 }

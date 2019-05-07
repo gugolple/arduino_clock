@@ -1,6 +1,11 @@
+#include "Types.h"
 void setup(){
-  led_setup();
+  Serial.begin(115200);
+  irSetup();
+  ledSetup();
+  clockSetup();
+  ledLoop();
 }
 void loop(){
-  led_loop();
+  irLoop();
 }
