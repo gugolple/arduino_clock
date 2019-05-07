@@ -14,25 +14,11 @@ const uint16_t colors[] = {
 void ledSetup() {
   matrix.begin();
   matrix.setTextWrap(false);
-  matrix.setBrightness(40);
-  matrix.setTextColor(colors[0]);
+  matrix.setBrightness(10);
 }
 
 int x    = 0;
 int pass = 0;
-
-//placeholder to check correct working without needing serial input
-void ledLoop() {
-  matrix.fillScreen(0);
-  matrix.setCursor(x, 0);
-  matrix.print(F("Howdy"));
-  if(--x < -36) {
-    x = matrix.width();
-    if(++pass >= 3) pass = 0;
-    matrix.setTextColor(colors[pass]);
-  }
-  printScreen();
-}
 
 void setPrintScreen(const char * mesg){
   setScreen(mesg);
@@ -47,7 +33,25 @@ void setScreen(const char * mesg){
 }
 
 void clockScreen(int hours, int minutes, int seconds){
-  
+  matrix.fillScreen(0);
+  char buf[3];
+  sprintf(buf,"%02d",hours);
+  matrix.setCursor(0, 0);
+  matrix.print(buf[0]);
+  matrix.setCursor(5, 0);
+  matrix.print(buf[1]);
+  sprintf(buf,"%02d",minutes);
+  matrix.setCursor(11, 0);
+  matrix.print(buf[0]);
+  matrix.setCursor(16, 0);
+  matrix.print(buf[1]);
+  sprintf(buf,"%02d",seconds);
+  matrix.setCursor(22, 0);
+  matrix.print(buf[0]);
+  matrix.setCursor(27, 0);
+  matrix.print(buf[1]);
+  matrix.setTextColor(matrix.Color(255, 0, 255));
+  printScreen();
 }
 
 void printScreen(){
