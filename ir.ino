@@ -4,9 +4,9 @@ const int RECV_PIN = 11;
 const int CONFIG_PIN = 12;
 const int MAX_SIZE = 5; //Amount of desired inputs
 const char mesg[6][8] = {"Up","Down","Left","Right","Ok","INVLAID"};
-int control_matrix[MAX_SIZE];
+unsigned long control_matrix[MAX_SIZE];
 decode_results results;
-long last;
+
 
 IRrecv irrecv(RECV_PIN);
 void irSetup(){
@@ -16,24 +16,44 @@ void irSetup(){
 
 void irLoop(){
   IrCommand current = scanGetInput();
+  if(current!=IrCommand::Invalid){
+    Serial.println(current);
+    input(current);
+  }
   if(digitalRead(CONFIG_PIN)==LOW){
     Serial.println("Configure");
     irConfigure();
   }
 }
 
+
+//Configure inputs of remote
 void irConfigure(){
+  unsigned long lastButton = 1;
   for(int i=0;i<MAX_SIZE;i++){
+    Serial.println(mesg[i]);
     //Send expected button
     setPrintScreen(mesg[i]);
-    //Wait until a valid input
-    while(!irRead() && last != results.value);
-    control_matrix[i] = results.value;
-    last = results.value;
+
+    //Current pair of values
+    unsigned long lastValue = 0;
+    unsigned long current = 0;
+    //Wait until a valid input that is different from last pressed button
+    //mitigating extreme repetition of remote
+    while(lastValue == current || current==lastButton){
+      while(!irRead());
+      current = results.value;
+      Serial.println(current);
+    };
+    control_matrix[i] = current;
+    lastValue = current;
+    lastButton = current;
   }
+  Serial.println("Done!");
   setPrintScreen("Done!");
 }
 
+//Transform input into usable values
 IrCommand scanGetInput(){
   if(irRead()){
     return getInput();
@@ -53,14 +73,15 @@ IrCommand getInput(){
 bool irRead(){
   bool r = false;
   if (irrecv.decode(&results)) {
-    //SANYO shows as invalid codes of 0 length
-    //if(results.decode_type!=SANYO)
+    //removing 0xFFFFFFFF, means repeat last action, universal
+    if(results.value != 0xFFFFFFFF)
     {
       // Print Code
       Serial.println(results.value, HEX);
-      irrecv.resume();              // Prepare for the next value
       r = true;
     }
+    //Dont forget to resume if want to read next value
+    irrecv.resume();              // Prepare for the next value
   }
   return r;
 }

@@ -46,6 +46,10 @@ void setScreen(const char * mesg){
   matrix.setTextColor(colors[0]);
 }
 
+void clockScreen(int hours, int minutes, int seconds){
+  
+}
+
 void printScreen(){
   noInterrupts();
   matrix.show();

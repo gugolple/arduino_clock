@@ -2,3 +2,6 @@
 enum IrCommand{
   Up,Down,Left,Right,Ok,Invalid
 };
+enum Status{
+  Clock, Config
+};

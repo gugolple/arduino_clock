@@ -25,6 +25,16 @@ void printDigits(int digits){
   Serial.print(digits);
 }
 
+void stringDigits(int d, char* c){
+  
+}
+
+int lastSeconds = second();
 void clockLoop(){
-  //digitalClockDisplay();
+  if(currentStatus == Status::Clock && lastSeconds != second()){
+    char res[9];
+    sprintf(res, "%02d:%02d:%02d", hour(),minute(),second());
+    Serial.println(res);
+    setPrintScreen(res);
+  }
 }

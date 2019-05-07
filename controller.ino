@@ -1,0 +1,3 @@
+void input(IrCommand command){
+  
+}
