@@ -1,38 +1,33 @@
 #include <Time.h>
 
+int lastSeconds = second();
+void clockLoop(){
+  if(lastSeconds != second() && sm.getCurrent()->status == Status::Time){
+    lastSeconds = second();
+    DataStruct t = DataStruct(hour(),minute(),second());
+    Coordinates c = Coordinates(0,0);
+    clockScreen(&c,&t);
+  }
+}
+
 void clockSetup(){
-}
-
-void digitalClockDisplay(){
-  // digital clock display of the time
-  printDigits(hour());
-  printDigits(minute());
-  printDigits(second());
-  Serial.print(" ");
-  Serial.print(day());
-  Serial.print(" ");
-  Serial.print(month());
-  Serial.print(" ");
-  Serial.print(year()); 
-  Serial.println(); 
-}
-
-void printDigits(int digits){
-  // utility function for digital clock display: prints preceding colon and leading 0
-  Serial.print(":");
-  if(digits < 10)
-    Serial.print('0');
-  Serial.print(digits);
-}
-
-void stringDigits(int d, char* c){
   
 }
 
-int lastSeconds = second();
-void clockLoop(){
-  if(currentStatus == Status::Clock && lastSeconds != second()){
-    lastSeconds = second();
-    clockScreen(hour(),minute(),second());
-  }
+void getClockStruct(DataStruct* args){
+  args->hours = hour();
+  args->minutes = minute();
+  args->seconds = second();
+}
+
+void getDayMonth(DataStruct* args){
+  char c[7];
+  sprintf(c,"%02d %s",day(),monthShortStr(now()));
+  args->str = c;
+}
+
+void getYear(DataStruct* args){
+  char c[7];
+  sprintf(c,"%d",year());
+  args->str = c;
 }

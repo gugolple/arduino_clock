@@ -1,7 +1,8 @@
 #include "Types.h"
-Status currentStatus = Status::Clock;
+#include "StateMachine.h"
 void setup(){
   Serial.begin(115200);
+  setUpStateMachine();
   irSetup();
   ledSetup();
   clockSetup();
@@ -10,4 +11,5 @@ void setup(){
 void loop(){
   irLoop();
   clockLoop();
+  controllerLoop();
 }

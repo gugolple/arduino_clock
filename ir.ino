@@ -33,7 +33,7 @@ void irConfigure(){
   for(int i=0;i<MAX_SIZE;i++){
     Serial.println(mesg[i]);
     //Send expected button
-    setPrintScreen(mesg[i]);
+    setPrintScreen(&Coordinates(0,0),mesg[i]);
 
     //Current pair of values
     unsigned long lastValue = 0;
@@ -50,7 +50,7 @@ void irConfigure(){
     lastButton = current;
   }
   Serial.println("Done!");
-  setPrintScreen("Done!");
+  setPrintScreen(&Coordinates(0,0),"Done!");
 }
 
 //Transform input into usable values

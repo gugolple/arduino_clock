@@ -8,8 +8,10 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(32, 8, PIN,
   NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG,
   NEO_GRB            + NEO_KHZ800);
 
-const uint16_t colors[] = {
-  matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255) };
+uint16_t currentColor = matrix.Color(255,0,255);
+uint16_t lastColor = matrix.Color(255,0,255);
+
+const int ANIMATION_SPEED_HORIZONTAL = 50;
 
 void ledSetup() {
   matrix.begin();
@@ -20,42 +22,87 @@ void ledSetup() {
 int x    = 0;
 int pass = 0;
 
-void setPrintScreen(const char * mesg){
-  setScreen(mesg);
+void setPrintScreen(Coordinates* coor, DataStruct* mesg){
+  setScreen(coor, mesg->str.c_str());
   printScreen();
 }
 
-void setScreen(const char * mesg){
+void setPrintScreen(Coordinates* coor,const char* mesg){
+  setScreen(coor, mesg);
+  printScreen();
+}
+
+void setScreen(Coordinates* coor, const char * mesg){
   matrix.fillScreen(0);
-  matrix.setCursor(0, 0);
+  matrix.setCursor(coor->x, coor->y);
   matrix.print(mesg);
-  matrix.setTextColor(colors[0]);
-}
-
-void clockScreen(int hours, int minutes, int seconds){
-  matrix.fillScreen(0);
-  char buf[3];
-  sprintf(buf,"%02d",hours);
-  matrix.setCursor(0, 0);
-  matrix.print(buf[0]);
-  matrix.setCursor(5, 0);
-  matrix.print(buf[1]);
-  sprintf(buf,"%02d",minutes);
-  matrix.setCursor(11, 0);
-  matrix.print(buf[0]);
-  matrix.setCursor(16, 0);
-  matrix.print(buf[1]);
-  sprintf(buf,"%02d",seconds);
-  matrix.setCursor(22, 0);
-  matrix.print(buf[0]);
-  matrix.setCursor(27, 0);
-  matrix.print(buf[1]);
-  matrix.setTextColor(matrix.Color(255, 0, 255));
-  printScreen();
+  matrix.setTextColor(currentColor);
 }
 
 void printScreen(){
   noInterrupts();
   matrix.show();
   interrupts();
+}
+
+//Animations of transitions //////////////////////////////////////
+
+void animationToLeft(void (*f1)(Coordinates*,DataStruct*),DataStruct* arg1,
+    void (*f2)(Coordinates*,DataStruct*),DataStruct* arg2){
+      
+    Coordinates c1 = Coordinates(0,0);
+    Coordinates c2 = Coordinates(matrix.width() ,0);
+    
+    for(int i=0;i<matrix.width();i++){
+      f1(&c1,arg1);
+      f2(&c2,arg2);
+      delay(ANIMATION_SPEED_HORIZONTAL);
+      c1.x-=i;
+      c2.x-=i;
+    }
+}
+
+void animationToRight(void (*f1)(Coordinates*,DataStruct*),DataStruct* arg1,
+    void (*f2)(Coordinates*,DataStruct*),DataStruct* arg2){
+      
+    Coordinates c1 = Coordinates(0,0);
+    Coordinates c2 = Coordinates(-matrix.width() ,0);
+    
+    for(int i=0;i<matrix.width();i++){
+      f1(&c1,arg1);
+      f2(&c2,arg2);
+      delay(ANIMATION_SPEED_HORIZONTAL);
+      c1.x+=i;
+      c2.x+=i;
+    }
+}
+
+void animationToTop(void (*f1)(Coordinates*,DataStruct*),DataStruct* arg1,
+    void (*f2)(Coordinates*,DataStruct*),DataStruct* arg2){
+      
+    Coordinates c1 = Coordinates(0,0);
+    Coordinates c2 = Coordinates(0,-matrix.height());
+    
+    for(int i=0;i<matrix.height();i++){
+      f1(&c1,arg1);
+      f2(&c2,arg2);
+      delay(ANIMATION_SPEED_HORIZONTAL);
+      c1.x+=i;
+      c2.x+=i;
+    }
+}
+
+void animationToBottom(void (*f1)(Coordinates*,DataStruct*),DataStruct* arg1,
+    void (*f2)(Coordinates*,DataStruct*),DataStruct* arg2){
+      
+    Coordinates c1 = Coordinates(0,0);
+    Coordinates c2 = Coordinates(0,matrix.height());
+    
+    for(int i=0;i<matrix.height();i++){
+      f1(&c1,arg1);
+      f2(&c2,arg2);
+      delay(ANIMATION_SPEED_HORIZONTAL);
+      c1.x-=i;
+      c2.x-=i;
+    }
 }
