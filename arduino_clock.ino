@@ -5,7 +5,6 @@ void setup(){
   setUpStateMachine();
   irSetup();
   ledSetup();
-  clockSetup();
   irConfigure();
 }
 void loop(){

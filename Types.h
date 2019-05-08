@@ -25,7 +25,12 @@ struct DataStruct{
   int hours;
   int minutes;
   int seconds;
-  DataStruct();
+  DataStruct(){
+    str = "";
+    hours=0;
+    minutes=0;
+    seconds=0;
+  }
   DataStruct(int h, int m, int s){
     hours=h;
     minutes=m;

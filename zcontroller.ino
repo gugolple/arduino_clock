@@ -1,37 +1,37 @@
 time_t lastUpdate = now();
+    
 
 
-void input(IrCommand command){
+void input(IrCommand &command){
   lastUpdate = now();
   StateNode* sn = sm.getDirection(command);
   if(sn!=NULL){
+    
     DataStruct ds1 = DataStruct();
-    sm.getCurrent()->getArgs(&ds1);
     DataStruct ds2 = DataStruct();
-    sn->getArgs(&ds2);
-    switch(command){
-      Up:
-        animationToTop(sm.getCurrent()->printFunct,&ds1,
-          sn->printFunct,&ds2);
-        break;
-      Down:
-        animationToBottom(sm.getCurrent()->printFunct,&ds1,
-          sn->printFunct,&ds2);
-        break;
-      Left:
-        animationToLeft(sm.getCurrent()->printFunct,&ds1,
-          sn->printFunct,&ds2);
-        break;
-      Right:
-        animationToRight(sm.getCurrent()->printFunct,&ds1,
-          sn->printFunct,&ds2);
-        break;
+    sm.getCurrent()->getArgsf()(&ds1);
+    sn->getArgsf()(&ds2);
+    
+    if(command==IrCommand::Up){
+      animationToTop(sm.getCurrent()->getPrintf(),&ds1,
+        sn->getPrintf(),&ds2);
+    }else if(command==IrCommand::Down){
+      animationToBottom(sm.getCurrent()->getPrintf(),&ds1,
+        sn->getPrintf(),&ds2);
+    }else if(command==IrCommand::Left){
+      animationToLeft(sm.getCurrent()->getPrintf(),&ds1,
+        sn->getPrintf(),&ds2);
+    }else if(command==IrCommand::Right){
+      animationToRight(sm.getCurrent()->getPrintf(),&ds1,
+        sn->getPrintf(),&ds2);
     }
+    sm.moveDirection(command);
+    Serial.println(sm.getCurrentStatus());
   }
 }
 
 void controllerLoop(){
-  if(minute(now()-lastUpdate)==1 && sm.getCurrent()->status!=Status::Time){
+  if(minute(now()-lastUpdate)==1 && !sm.isCurrentState(Status::Time)){
     sm.setDefault();
   }
 }

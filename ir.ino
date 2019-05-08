@@ -35,7 +35,6 @@ void irConfigure(){
     Serial.println(mesg[i]);
     //Send expected button
     setPrintScreen(&Coordinates(0,0),mesg[i]);
-
     //Current pair of values
     unsigned long lastValue = 0;
     unsigned long current = 0;
@@ -76,7 +75,7 @@ bool irRead(){
   bool r = false;
   if (irrecv.decode(&results)) {
     //removing 0xFFFFFFFF, means repeat last action, universal
-    if(results.value != 0xFFFFFFFF)
+    if(results.value != 0xFFFFFFFF && results.decode_type!=UNKNOWN)
     {
       // Print Code
       Serial.println(results.value, HEX);

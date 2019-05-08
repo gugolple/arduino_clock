@@ -1,5 +1,5 @@
 class StateNode{
-  public:
+  private:
     StateNode* left;
     StateNode* right;
     StateNode* up;
@@ -9,6 +9,7 @@ class StateNode{
     //Retrieves/generates arguments
     void (*getArgs)(DataStruct*);
     Status status;
+  public:
     StateNode(){
       left=NULL;
       right=NULL;
@@ -28,14 +29,58 @@ class StateNode{
       status = s;
     }
   
-    StateNode* getDirection(IrCommand command){
-      switch(command){
-        Left: return left;
-        Right: return right;
-        Up: return up;
-        Down: return down;
-        default: return NULL;
+    StateNode* getDirection(const IrCommand &command){
+      StateNode* res = NULL;
+      //Serial.print("Switch: ");
+      //Serial.print(command);
+      
+      if(command==IrCommand::Up){
+        //Serial.println("up");
+        res = up;
+      }else if(command==IrCommand::Down){
+        //Serial.println("down");
+        res = down;
+      }else if(command==IrCommand::Left){
+        //Serial.println("left");
+        res = left;
+      }else if(command==IrCommand::Right){
+        //Serial.println("right");
+        res = right;
+      }else{
+        //Serial.println("sad");
       }
+      return res;
     }
-    
+    void setNodeLeft(StateNode* sn){
+      left = sn;
+    }
+    void setNodeRight(StateNode* sn){
+      right = sn;
+    }
+    void setNodeUp(StateNode* sn){
+      up = sn;
+    }
+    void setNodeDown(StateNode* sn){
+      down = sn;
+    }
+    Status getStatus(){
+      return status;
+    }
+    void (*getPrintf(void))(Coordinates*,DataStruct*){
+      return printFunct;
+    }
+    void (*getArgsf(void))(DataStruct*){
+      return getArgs;
+    }
+
+    void checkNulls(){
+      Serial.print(F("Left "));
+      Serial.println(left==NULL);
+      Serial.print(F("Right" ));
+      Serial.println(right==NULL);
+      Serial.print(F("Up" ));
+      Serial.println(up==NULL);
+      Serial.print(F("Down"));
+      Serial.println(down==NULL);
+    }
 };

@@ -1,69 +1,72 @@
 
 StateNode timeState = StateNode(Status::Time, &clockScreen, &getClockStruct);
-StateNode dayMonthState = StateNode(Status::DayMonth, &setPrintScreen, &getDayMonth);
-StateNode yearState = StateNode(Status::Year, &setPrintScreen, &getYear);
-StateNode configColorState = StateNode(Status::ConfigColor, &setPrintScreen, &getColorString);
-StateNode configDateState = StateNode(Status::ConfigDate, &setPrintScreen, &getDateString);
-StateNode setColorRState = StateNode(Status::SetColorR, &setPrintScreen, &getRedString);
-StateNode setColorGState = StateNode(Status::SetColorG, &setPrintScreen, &getGreenString);
-StateNode setColorBState = StateNode(Status::SetColorB, &setPrintScreen, &getBlueString);
+StateNode dayMonthState = StateNode(Status::DayMonth, &setScreen, &getDayMonth);
+StateNode yearState = StateNode(Status::Year, &setScreen, &getYear);
+StateNode configColorState = StateNode(Status::ConfigColor, &setScreen, &getColorString);
+StateNode configDateState = StateNode(Status::ConfigDate, &setScreen, &getDateString);
+StateNode setColorRState = StateNode(Status::SetColorR, &setScreen, &getRedString);
+StateNode setColorGState = StateNode(Status::SetColorG, &setScreen, &getGreenString);
+StateNode setColorBState = StateNode(Status::SetColorB, &setScreen, &getBlueString);
 
 //Empty only when configuring IR
 StateNode configureIRState = StateNode(Status::ConfigIR, NULL, NULL);
 
 //TODO
 StateNode setTimeState = StateNode(Status::SetTime, &clockScreen, &getClockStruct);
-StateNode setDayMonthState = StateNode(Status::SetDayMonth, &setPrintScreen, &getDayMonth);
-StateNode setYearState = StateNode(Status::SetYear, &setPrintScreen, &getYear);
+StateNode setDayMonthState = StateNode(Status::SetDayMonth, &setScreen, &getDayMonth);
+StateNode setYearState = StateNode(Status::SetYear, &setScreen, &getYear);
 
 
-StateMachine sm(&timeState);
+StateMachine sm = NULL;
 
 //Only linking where it should move
 void setUpStateMachine(){
-  timeState.up = &yearState;
-  timeState.down = &dayMonthState;
-  timeState.right = &configColorState;
+  timeState.setNodeUp(&yearState);
+  timeState.setNodeDown(&dayMonthState);
+  timeState.setNodeRight(&configColorState);
 
-  dayMonthState.up = &timeState;
-  dayMonthState.down = &yearState;
-  dayMonthState.right = &configColorState;
+  dayMonthState.setNodeUp(&timeState);
+  dayMonthState.setNodeDown(&yearState);
+  dayMonthState.setNodeRight(&configColorState);
   
-  yearState.up = &dayMonthState;
-  yearState.down = &timeState;
-  yearState.right = &configColorState;
+  yearState.setNodeUp(&dayMonthState);
+  yearState.setNodeDown(&timeState);
+  yearState.setNodeRight(&configColorState);
   
-  configColorState.up = &configDateState;
-  configColorState.down = &configDateState;
-  configColorState.left = &timeState;
-  configColorState.right = &setColorGState;
+  configColorState.setNodeUp(&configDateState);
+  configColorState.setNodeDown(&configDateState);
+  configColorState.setNodeLeft(&timeState);
+  configColorState.setNodeRight(&setColorGState);
   
-  setColorGState.up = &setColorRState;
-  setColorGState.down = &setColorBState;
-  setColorGState.left = &configColorState;
+  setColorGState.setNodeUp(&setColorRState);
+  setColorGState.setNodeDown(&setColorBState);
+  setColorGState.setNodeLeft(&configColorState);
   
-  setColorRState.up = &setColorBState;
-  setColorRState.down = &setColorGState;
-  setColorRState.left = &configColorState;
+  setColorRState.setNodeUp(&setColorBState);
+  setColorRState.setNodeDown(&setColorGState);
+  setColorRState.setNodeLeft(&configColorState);
   
-  setColorBState.up = &setColorGState;
-  setColorBState.down = &setColorRState;
-  setColorBState.left = &configColorState;
+  setColorBState.setNodeUp(&setColorGState);
+  setColorBState.setNodeDown(&setColorRState);
+  setColorBState.setNodeLeft(&configColorState);
   
-  configDateState.up = &configColorState;
-  configDateState.down = &configColorState;
-  configDateState.left = &timeState;
-  configDateState.right = &setTimeState;
+  configDateState.setNodeUp(&configColorState);
+  configDateState.setNodeDown(&configColorState);
+  configDateState.setNodeLeft(&timeState);
+  configDateState.setNodeRight(&setTimeState);
   
-  setTimeState.up = &setDayMonthState;
-  setTimeState.down = &setYearState;
-  setTimeState.left = &configDateState;
+  setTimeState.setNodeUp(&setDayMonthState);
+  setTimeState.setNodeDown(&setYearState);
+  setTimeState.setNodeLeft(&configDateState);
   
-  setDayMonthState.up = &setYearState;
-  setDayMonthState.down = &setTimeState;
-  setDayMonthState.left = &configDateState;
+  setDayMonthState.setNodeUp(&setYearState);
+  setDayMonthState.setNodeDown(&setTimeState);
+  setDayMonthState.setNodeLeft(&configDateState);
   
-  setYearState.up = &setTimeState;
-  setYearState.down = &setDayMonthState;
-  setYearState.left = &configDateState;
+  setYearState.setNodeUp(&setTimeState);
+  setYearState.setNodeDown(&setDayMonthState);
+  setYearState.setNodeLeft(&configDateState);
+  Serial.println("All ready!");
+  timeState.checkNulls();
+  sm = StateMachine(&timeState);
 }

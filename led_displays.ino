@@ -30,6 +30,7 @@ void animationToLeft(void (*f1)(Coordinates*,DataStruct*),DataStruct* arg1,
     for(int i=0;i<matrix.width();i++){
       f1(&c1,arg1);
       f2(&c2,arg2);
+      printScreen();
       delay(ANIMATION_SPEED_HORIZONTAL);
       c1.x-=i;
       c2.x-=i;
@@ -45,6 +46,7 @@ void animationToRight(void (*f1)(Coordinates*,DataStruct*),DataStruct* arg1,
     for(int i=0;i<matrix.width();i++){
       f1(&c1,arg1);
       f2(&c2,arg2);
+      printScreen();
       delay(ANIMATION_SPEED_HORIZONTAL);
       c1.x+=i;
       c2.x+=i;
@@ -60,6 +62,7 @@ void animationToTop(void (*f1)(Coordinates*,DataStruct*),DataStruct* arg1,
     for(int i=0;i<matrix.height();i++){
       f1(&c1,arg1);
       f2(&c2,arg2);
+      printScreen();
       delay(ANIMATION_SPEED_HORIZONTAL);
       c1.x+=i;
       c2.x+=i;
@@ -75,8 +78,10 @@ void animationToBottom(void (*f1)(Coordinates*,DataStruct*),DataStruct* arg1,
     for(int i=0;i<matrix.height();i++){
       f1(&c1,arg1);
       f2(&c2,arg2);
+      printScreen();
       delay(ANIMATION_SPEED_HORIZONTAL);
       c1.x-=i;
       c2.x-=i;
     }
+    
 }

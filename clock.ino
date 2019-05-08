@@ -2,16 +2,13 @@
 
 int lastSeconds = second();
 void clockLoop(){
-  if(lastSeconds != second() && sm.getCurrent()->status == Status::Time){
+  if(lastSeconds != second() && sm.isCurrentState(Status::Time)){
+    //Serial.println("SecondPassed");
     lastSeconds = second();
     DataStruct t = DataStruct(hour(),minute(),second());
     Coordinates c = Coordinates(0,0);
     clockScreen(&c,&t);
   }
-}
-
-void clockSetup(){
-  
 }
 
 void getClockStruct(DataStruct* args){

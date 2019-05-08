@@ -32,6 +32,10 @@ void setPrintScreen(Coordinates* coor,const char* mesg){
   printScreen();
 }
 
+void setScreen(Coordinates* coor, DataStruct* mesg){
+  setScreen(coor,mesg->str.c_str());
+}
+
 void setScreen(Coordinates* coor, const char * mesg){
   matrix.fillScreen(0);
   matrix.setCursor(coor->x, coor->y);
