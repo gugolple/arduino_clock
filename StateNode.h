@@ -28,7 +28,7 @@ class StateNode{
       status = s;
     }
   
-    const StateNode* getDirection(IrCommand command){
+    StateNode* getDirection(IrCommand command){
       switch(command){
         Left: return left;
         Right: return right;

@@ -8,6 +8,9 @@ StateNode setColorRState = StateNode(Status::SetColorR, &setPrintScreen, &getRed
 StateNode setColorGState = StateNode(Status::SetColorG, &setPrintScreen, &getGreenString);
 StateNode setColorBState = StateNode(Status::SetColorB, &setPrintScreen, &getBlueString);
 
+//Empty only when configuring IR
+StateNode configureIRState = StateNode(Status::ConfigIR, NULL, NULL);
+
 //TODO
 StateNode setTimeState = StateNode(Status::SetTime, &clockScreen, &getClockStruct);
 StateNode setDayMonthState = StateNode(Status::SetDayMonth, &setPrintScreen, &getDayMonth);

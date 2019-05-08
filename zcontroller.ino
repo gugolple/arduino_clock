@@ -5,12 +5,27 @@ void input(IrCommand command){
   lastUpdate = now();
   StateNode* sn = sm.getDirection(command);
   if(sn!=NULL){
+    DataStruct ds1 = DataStruct();
+    sm.getCurrent()->getArgs(&ds1);
+    DataStruct ds2 = DataStruct();
+    sn->getArgs(&ds2);
     switch(command){
-      Up: 
+      Up:
+        animationToTop(sm.getCurrent()->printFunct,&ds1,
+          sn->printFunct,&ds2);
         break;
       Down:
+        animationToBottom(sm.getCurrent()->printFunct,&ds1,
+          sn->printFunct,&ds2);
+        break;
       Left:
+        animationToLeft(sm.getCurrent()->printFunct,&ds1,
+          sn->printFunct,&ds2);
+        break;
       Right:
+        animationToRight(sm.getCurrent()->printFunct,&ds1,
+          sn->printFunct,&ds2);
+        break;
     }
   }
 }

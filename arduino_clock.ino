@@ -6,7 +6,7 @@ void setup(){
   irSetup();
   ledSetup();
   clockSetup();
-  //irConfigure(); temporarily disabled
+  irConfigure();
 }
 void loop(){
   irLoop();

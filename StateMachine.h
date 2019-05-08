@@ -14,6 +14,12 @@ class StateMachine{
     StateNode* getCurrent(){
       return current;
     }
+    void moveDirection(IrCommand command){
+      current = current->getDirection(command);
+    }
+    void setCurrent(StateNode* sn){
+      current = sn;
+    }
     void setDefault(){
       current = defaultState;
     }

@@ -3,6 +3,7 @@ enum IrCommand{
   Up,Down,Left,Right,Ok,Invalid
 };
 enum Status{
+  ConfigIR,
   Time, DayMonth, Year,
   ConfigColor, ConfigDate,
   SetTime, SetDayMonth, SetYear,
@@ -24,6 +25,7 @@ struct DataStruct{
   int hours;
   int minutes;
   int seconds;
+  DataStruct();
   DataStruct(int h, int m, int s){
     hours=h;
     minutes=m;

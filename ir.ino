@@ -30,6 +30,7 @@ void irLoop(){
 //Configure inputs of remote
 void irConfigure(){
   unsigned long lastButton = 1;
+  sm.setCurrent(&configureIRState);
   for(int i=0;i<MAX_SIZE;i++){
     Serial.println(mesg[i]);
     //Send expected button
@@ -50,6 +51,7 @@ void irConfigure(){
     lastButton = current;
   }
   Serial.println("Done!");
+  sm.setDefault();
   setPrintScreen(&Coordinates(0,0),"Done!");
 }
 
