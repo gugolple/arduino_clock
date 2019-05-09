@@ -13,20 +13,23 @@ void input(IrCommand &command){
     sn->getArgsf()(&ds2);
     
     if(command==IrCommand::Up){
+      Serial.println(F("Up"));
       animationToTop(sm.getCurrent()->getPrintf(),&ds1,
         sn->getPrintf(),&ds2);
     }else if(command==IrCommand::Down){
+      Serial.println(F("Down"));
       animationToBottom(sm.getCurrent()->getPrintf(),&ds1,
         sn->getPrintf(),&ds2);
     }else if(command==IrCommand::Left){
+      Serial.println(F("Left"));
       animationToLeft(sm.getCurrent()->getPrintf(),&ds1,
         sn->getPrintf(),&ds2);
     }else if(command==IrCommand::Right){
+      Serial.println(F("Right"));
       animationToRight(sm.getCurrent()->getPrintf(),&ds1,
         sn->getPrintf(),&ds2);
     }
     sm.moveDirection(command);
-    Serial.println(sm.getCurrentStatus());
   }
 }
 

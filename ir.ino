@@ -33,6 +33,7 @@ void irConfigure(){
   sm.setCurrent(&configureIRState);
   for(int i=0;i<MAX_SIZE;i++){
     Serial.println(mesg[i]);
+    clearScreen();
     //Send expected button
     setPrintScreen(&Coordinates(0,0),mesg[i]);
     //Current pair of values

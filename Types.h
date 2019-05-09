@@ -21,12 +21,11 @@ struct Coordinates{
 };
 
 struct DataStruct{
-  String str;
+  char str[8];
   int hours;
   int minutes;
   int seconds;
   DataStruct(){
-    str = "";
     hours=0;
     minutes=0;
     seconds=0;
@@ -36,7 +35,7 @@ struct DataStruct{
     minutes=m;
     seconds=s;
   }
-  DataStruct(String c){
-    str = c;
+  DataStruct(char c){
+    strcpy(c, str);
   }
 };

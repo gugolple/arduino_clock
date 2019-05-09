@@ -23,7 +23,7 @@ int x    = 0;
 int pass = 0;
 
 void setPrintScreen(Coordinates* coor, DataStruct* mesg){
-  setScreen(coor, mesg->str.c_str());
+  setScreen(coor, mesg->str);
   printScreen();
 }
 
@@ -33,14 +33,18 @@ void setPrintScreen(Coordinates* coor,const char* mesg){
 }
 
 void setScreen(Coordinates* coor, DataStruct* mesg){
-  setScreen(coor,mesg->str.c_str());
+  setScreen(coor,mesg->str);
 }
 
 void setScreen(Coordinates* coor, const char * mesg){
-  matrix.fillScreen(0);
+  Serial.println(mesg);
   matrix.setCursor(coor->x, coor->y);
   matrix.print(mesg);
   matrix.setTextColor(currentColor);
+}
+
+void clearScreen(){
+  matrix.fillScreen(0);
 }
 
 void printScreen(){
